@@ -3,9 +3,9 @@ var mysql = require('mysql');
 
 
 var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
+    host: 'sql4.freemysqlhosting.net',
+    user: 'sql4423528',
+    password: 'lV6tfxCgF8',
     database: 'sql4423528', 
     parseJSON: true,
     
