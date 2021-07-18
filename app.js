@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 //const db = require("./models");
-
+const path =  require('path');
 var device = require('express-device');
 var geoip = require('geoip-lite');
 const dotenv = require("dotenv")
