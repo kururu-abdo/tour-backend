@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const db = require("./models");
+//const db = require("./models");
 
 var device = require('express-device');
 var geoip = require('geoip-lite');
@@ -13,11 +13,12 @@ var auth = require('./config/passport')()
 const router = express.Router();
 
 var config = require('./config/keyconfig')
+
 //// tourist facilities
 //force: false, alter: true
-db.sequelize.sync({ force: true}).then(() => {
-  console.log('Drop and Resync with { force: true }');
-});
+// db.sequelize.sync({ force: true}).then(() => {
+//   console.log('Drop and Resync with { force: true }');
+// });
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
