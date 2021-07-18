@@ -10,6 +10,7 @@ const user = require('./controllers/user/userController');
 
 var bodyParser = require('body-parser')
 var auth = require('./config/passport')()
+const router = express.Router();
 
 var config = require('./config/keyconfig')
 //// tourist facilities
@@ -33,13 +34,16 @@ app.get('/me', (req, res) => {
 })
 
 //db.sequelize.sync();
-
+router.get('/' ,  (req,res)=>{
+  res.sendFile(path.join(__dirname + '/index.html'));
+})
+app.use('/', router);
 
 app.get('/all', (req, res) => {
   user.findAll(req,res);
 
 })
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 5000, () => {
   console.log(`Example app listening at http://localhost:${process.env.PORT}`)
 })
