@@ -14,7 +14,7 @@ var connection = mysql.createConnection({
 connection.connect(function (err) {
     if (err) throw err;
 
-    console.log('Connected to the MySQL server.');
+    console.log('Connected to the MySQL server:   '+connection.config.host);
 });
 
 

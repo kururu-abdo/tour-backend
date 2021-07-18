@@ -19,9 +19,20 @@ var config = require('./config/keyconfig')
 // db.sequelize.sync({ force: true}).then(() => {
 //   console.log('Drop and Resync with { force: true }');
 // });
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+
+
+
+app.use(express.static(__dirname + '/public'));
+app.use('/photos/location', express.static('photos/location/'));
+app.use('/photos/company', express.static('photos/company/'));
+
+
+
 
 app.use('/user' ,  require('./user/user'))
 app.use('/country' ,  require('./country/country'))
