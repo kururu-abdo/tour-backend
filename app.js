@@ -17,9 +17,13 @@ var config = require('./config/keyconfig')
 // // tourist facilities
 // force: false, alter: true
 //force: true
+
+
 // db.sequelize.sync({ force: false, alter: true}).then(() => {
 //   console.log('Drop and Resync with { force: true }');
 // });
+
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
@@ -50,6 +54,13 @@ app.get('/me', (req, res) => {
 
 
 })
+
+app.use(function (req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
 app.use(function (err, req, res, next) {
   // render the error page
   console.log(err);

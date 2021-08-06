@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
 
             email: {
                 type: DataTypes.STRING,
-
+                allowNull: false,
 
             },
             password: {
@@ -34,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
             },
             phone: {
                 type: DataTypes.STRING,
+                allowNull: false,
 
             },
             address: {
@@ -48,6 +49,12 @@ module.exports = (sequelize, DataTypes) => {
         } ,
         {
             timestamps: false,
+            indexes: [
+                {
+                    unique: true,
+                    fields: ['phone', 'email']
+                }
+            ]
         }
 
 

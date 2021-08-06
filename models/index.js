@@ -80,11 +80,10 @@ db.location_tag = require("./location_tag")(sequelize, Sequelize);
 db.location.hasMany(db.work_time, { })
 
 db.location_type.hasMany(db.location ,  {as :"type"})
-
+db.location.belongsTo(db.location_type , {as:"type"})
 
 db.location.hasOne (db.facilitate_location ,   {})
 db.location.hasOne(db.tour_location, {})
- 
 
 
 db.tour_location.hasMany(db.facilitate_location, {})
@@ -98,8 +97,11 @@ db.facilitate_location_type.hasMany(db.facilitate_location, {})
 db.day.hasMany(db.work_time , {})
 
 db.location.hasMany(db.location_pic , {})
+db.location_pic.belongsTo(db.location, {})
+
 
 db.comment.belongsTo(db.user , {})
+
 
 db.comment.belongsTo(db.location, {})
 
@@ -152,8 +154,9 @@ db.like.belongsTo(db.location, { foreignKey: 'location_id', targetKey: 'location
 
 db.location.hasMany(db.location_tag, {})
 db.tag.hasMany(db.location_tag, {})
+db.location_tag.belongsTo(db.location ,{})
 
-
+db.location_tag.belongsTo(db.tag, {})
 
 
 
