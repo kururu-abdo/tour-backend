@@ -4,57 +4,38 @@ module.exports = (sequelize, DataTypes) => {
 
 
 
-    const location = sequelize.define("location",
+    const state = sequelize.define("tag",
 
 
         {
 
 
-           location_id: {
+            tag_id: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true
-
             },
 
 
-            location_ar_name: {
+            tag_en_name: {
                 type: DataTypes.STRING,
 
             },
-            location_en_name: {
+            tag_ar_name: {
                 type: DataTypes.STRING,
 
             },
-
-            ar_desc: {
-                type: DataTypes.STRING,
-
-            },
-            en_desc: {
-                type: DataTypes.STRING,
-
-            },
-            lat: {
-                type: DataTypes.DOUBLE,
-
-
-            },
-            lng: {
-                type: DataTypes.DOUBLE,
-
-            },
-           
-        } ,
-        
+          
+        },
         {
             timestamps: false,
         }
 
+
     )
 
 
-    return location;
+    return state;
 
     // user.belongsTo(country, { foreignKey: 'fk_customerid', targetKey: 'country_id' });
     // country.hasMany(user, { foreignKey: 'fk_customerid', targetKey: 'country_id' });

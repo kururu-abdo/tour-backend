@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
 
 
         {
-
+           
 
             location_type_id: {
                 type: DataTypes.INTEGER,
@@ -30,6 +30,8 @@ module.exports = (sequelize, DataTypes) => {
 
             },
           
+        } ,{
+            timestamps: false,
         }
 
     )

@@ -45,7 +45,11 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
 
             },
+        } ,
+        {
+            timestamps: false,
         }
+
 
     )
 

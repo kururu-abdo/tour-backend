@@ -4,28 +4,25 @@ module.exports = (sequelize, DataTypes) => {
 
 
 
-    const country = sequelize.define("countries",
+    const work_time = sequelize.define("comment",
 
 
         {
 
 
-            country_id: {
+            id: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true
             },
 
 
-            country_ar_name: {
-                type: DataTypes.STRING,
+
+            time: {
+                type: DataTypes.TIME,
 
             },
-            country_en_name: {
-                type: DataTypes.STRING,
-
-            },
-            country_code: {
+            comment: {
                 type: DataTypes.STRING,
 
             }
@@ -38,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     )
 
 
-    return country;
+    return work_time;
 
     // user.belongsTo(country, { foreignKey: 'fk_customerid', targetKey: 'country_id' });
     // country.hasMany(user, { foreignKey: 'fk_customerid', targetKey: 'country_id' });

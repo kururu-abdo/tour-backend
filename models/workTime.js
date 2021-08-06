@@ -26,7 +26,11 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.TIME,
 
             }
+        } ,
+        {
+            timestamps: false,
         }
+
 
     )
 

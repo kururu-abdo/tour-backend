@@ -28,7 +28,12 @@ module.exports = (sequelize, DataTypes) => {
             state_id: {
                 type: DataTypes.INTEGER,
 
-            }
+            } ,
+
+            
+        } ,
+          {
+            timestamps: false,
         }
 
     )
