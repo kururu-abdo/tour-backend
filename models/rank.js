@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
 
 
 
-    const work_time = sequelize.define("rank",
+    const rank = sequelize.define("rank",
 
 
         {
@@ -12,12 +12,23 @@ module.exports = (sequelize, DataTypes) => {
 
             id: {
                 type: DataTypes.INTEGER,
-                primaryKey: true,
+                unique : true,
                 autoIncrement: true
             },
+            user_id: {
+                type: DataTypes.INTEGER,
+                primaryKey: true,
 
 
+            },
+            location_id: {
+                type: DataTypes.INTEGER,
+                primaryKey: true,
 
+
+            },
+
+            
             rank: {
                 type: DataTypes.DOUBLE,
 
@@ -32,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
     )
 
 
-    return work_time;
+    return rank;
 
     // user.belongsTo(country, { foreignKey: 'fk_customerid', targetKey: 'country_id' });
     // country.hasMany(user, { foreignKey: 'fk_customerid', targetKey: 'country_id' });

@@ -7,7 +7,10 @@ const { Op } = require("sequelize");
 
 // var User = sequelize.import("../models/user")
 var User = db2.user;
-
+router.get('/data', (req, res ,  next) => { 
+        console.log(req.query.data);
+    res.json({data: req.query.data})
+})
 
 router.post('/signup', (req, res ,  next) => {
 
@@ -27,7 +30,7 @@ router.post('/signup', (req, res ,  next) => {
 
     var country = req.param('country_id')
    
-        
+    var image =  req.param("pic") ;    
     User.create ({
     user_name: name,
     email :  email ,
@@ -35,7 +38,8 @@ router.post('/signup', (req, res ,  next) => {
     password: password ,
     address : address ,
     country_id : country ,
-        userTypeTypeId:1
+        userTypeTypeId:1 ,
+        pic  : image  || ""
 
     }).then(function (result) {
         res.json({
@@ -260,7 +264,7 @@ router.get('/login', async (req, res , next) => {
                 data: result
             })
         } else {
-            res.json({
+            res.status(404).json({
                 status: -1,
                 data: "Wrong phone/password"
             })
@@ -374,5 +378,16 @@ router.get('/login', async (req, res , next) => {
 
 })
 
+module.exports = function (io) {
+    //Socket.IO
+    io.on('connection', function (socket) {
+     
+        socket.on("update", (data) => {
 
-module.exports = router
+            //  io.emit("update" ,    )
+        })
+        
+    });
+    return router;
+};
+

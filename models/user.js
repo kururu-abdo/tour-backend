@@ -41,6 +41,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
 
             },
+            pic : {
+                type: DataTypes.STRING,
+
+            } ,
 
             country_id: {
                 type: DataTypes.INTEGER,

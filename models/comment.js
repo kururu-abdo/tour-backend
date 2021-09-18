@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
 
 
 
-    const work_time = sequelize.define("comment",
+    const comment = sequelize.define("comment",
 
 
         {
@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
 
 
             time: {
-                type: DataTypes.TIME,
+                type: DataTypes.DATE,
 
             },
             comment: {
@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     )
 
 
-    return work_time;
+    return comment;
 
     // user.belongsTo(country, { foreignKey: 'fk_customerid', targetKey: 'country_id' });
     // country.hasMany(user, { foreignKey: 'fk_customerid', targetKey: 'country_id' });

@@ -15,13 +15,36 @@ module.exports = (sequelize, DataTypes) => {
                 primaryKey: true,
                 autoIncrement: true
             },
+            er_name: {
+                type: DataTypes.STRING,
+            } ,
+            en_name:{
+                type: DataTypes.STRING,
+            } ,
+ar_address: {
+                type: DataTypes.STRING,
 
+            },
+            en_address: {
+                type: DataTypes.STRING,
+
+            },
 
             email: {
                 type: DataTypes.STRING,
 
             },
             whtsapp: {
+                type: DataTypes.STRING,
+
+            },
+            en_short_desc  :{
+                type: DataTypes.STRING,
+
+            } ,
+
+
+            ar_short_desc: {
                 type: DataTypes.STRING,
 
             },

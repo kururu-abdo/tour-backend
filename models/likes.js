@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
 
             id: {
                 type: DataTypes.INTEGER,
-                primaryKey: true,
+               // primaryKey: true,
+               unique :true,
                 autoIncrement: true ,
                
             },
@@ -34,7 +35,9 @@ module.exports = (sequelize, DataTypes) => {
         } ,
         {
             timestamps: false,
-        }
+            
+        } ,
+        
 
 
     )

@@ -1,0 +1,99 @@
+{
+  level: 'warn',
+  message: 'Run "npm install apidoc -g" and then run "apidoc -e node_modules/" at your terminal',
+  log: [Error: ENOENT: no such file or directory, access 'F:\myproducts\tourapp-backend\tour-backend\doc\api_data.json'] {
+    errno: -4058,
+    code: 'ENOENT',
+    syscall: 'access',
+    path: 'F:\\myproducts\\tourapp-backend\\tour-backend\\doc\\api_data.json'
+  },
+  timestamp: '2021-09-08T05:59:40.740Z'
+}
+{
+  level: 'warn',
+  message: 'Run "npm install apidoc -g" and then run "apidoc -e node_modules/" at your terminal',
+  log: [Error: ENOENT: no such file or directory, access 'F:\myproducts\tourapp-backend\tour-backend\doc\api_data.json'] {
+    errno: -4058,
+    code: 'ENOENT',
+    syscall: 'access',
+    path: 'F:\\myproducts\\tourapp-backend\\tour-backend\\doc\\api_data.json'
+  },
+  timestamp: '2021-09-08T06:01:35.361Z'
+}
+{
+  level: 'error',
+  message: 'File "document.html" is missing at "./node_modules/node-api-doc-generator/api_doc" dir',
+  log: [Error: ENOENT: no such file or directory, access 'F:\myproducts\tourapp-backend\tour-backend\node_modules\node-api-doc-generator\api_doc\document.html'] {
+    errno: -4058,
+    code: 'ENOENT',
+    syscall: 'access',
+    path: 'F:\\myproducts\\tourapp-backend\\tour-backend\\node_modules\\node-api-doc-generator\\api_doc\\document.html'
+  },
+  timestamp: '2021-09-08T06:03:29.280Z'
+}
+{
+  level: 'error',
+  message: 'File "document.html" is missing at "./node_modules/node-api-doc-generator/api_doc" dir',
+  log: [Error: ENOENT: no such file or directory, access 'F:\myproducts\tourapp-backend\tour-backend\node_modules\node-api-doc-generator\api_doc\document.html'] {
+    errno: -4058,
+    code: 'ENOENT',
+    syscall: 'access',
+    path: 'F:\\myproducts\\tourapp-backend\\tour-backend\\node_modules\\node-api-doc-generator\\api_doc\\document.html'
+  },
+  timestamp: '2021-09-08T06:03:36.448Z'
+}
+{
+  level: 'error',
+  message: 'File "document.html" is missing at "./node_modules/node-api-doc-generator/api_doc" dir',
+  log: [Error: ENOENT: no such file or directory, access 'F:\myproducts\tourapp-backend\tour-backend\node_modules\node-api-doc-generator\api_doc\document.html'] {
+    errno: -4058,
+    code: 'ENOENT',
+    syscall: 'access',
+    path: 'F:\\myproducts\\tourapp-backend\\tour-backend\\node_modules\\node-api-doc-generator\\api_doc\\document.html'
+  },
+  timestamp: '2021-09-08T06:03:41.037Z'
+}
+{
+  level: 'error',
+  message: 'File "document.html" is missing at "./node_modules/node-api-doc-generator/api_doc" dir',
+  log: [Error: ENOENT: no such file or directory, access 'F:\myproducts\tourapp-backend\tour-backend\node_modules\node-api-doc-generator\api_doc\document.html'] {
+    errno: -4058,
+    code: 'ENOENT',
+    syscall: 'access',
+    path: 'F:\\myproducts\\tourapp-backend\\tour-backend\\node_modules\\node-api-doc-generator\\api_doc\\document.html'
+  },
+  timestamp: '2021-09-08T06:03:48.404Z'
+}
+{
+  level: 'error',
+  message: 'File "document.html" is missing at "./node_modules/node-api-doc-generator/api_doc" dir',
+  log: [Error: ENOENT: no such file or directory, access 'F:\myproducts\tourapp-backend\tour-backend\node_modules\node-api-doc-generator\api_doc\document.html'] {
+    errno: -4058,
+    code: 'ENOENT',
+    syscall: 'access',
+    path: 'F:\\myproducts\\tourapp-backend\\tour-backend\\node_modules\\node-api-doc-generator\\api_doc\\document.html'
+  },
+  timestamp: '2021-09-08T06:03:52.681Z'
+}
+{
+  level: 'error',
+  message: 'File "document.html" is missing at "./node_modules/node-api-doc-generator/api_doc" dir',
+  log: [Error: ENOENT: no such file or directory, access 'F:\myproducts\tourapp-backend\tour-backend\node_modules\node-api-doc-generator\api_doc\document.html'] {
+    errno: -4058,
+    code: 'ENOENT',
+    syscall: 'access',
+    path: 'F:\\myproducts\\tourapp-backend\\tour-backend\\node_modules\\node-api-doc-generator\\api_doc\\document.html'
+  },
+  timestamp: '2021-09-08T06:04:25.132Z'
+}
+{
+  level: 'error',
+  message: 'File "document.html" is missing at "./node_modules/node-api-doc-generator/api_doc" dir',
+  log: [Error: ENOENT: no such file or directory, access 'F:\myproducts\tourapp-backend\tour-backend\node_modules\node-api-doc-generator\api_doc\document.html'] {
+    errno: -4058,
+    code: 'ENOENT',
+    syscall: 'access',
+    path: 'F:\\myproducts\\tourapp-backend\\tour-backend\\node_modules\\node-api-doc-generator\\api_doc\\document.html'
+  },
+  timestamp: '2021-09-08T06:04:29.553Z'
+}

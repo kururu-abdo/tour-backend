@@ -1,5 +1,7 @@
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize('tourbackend', 'root', '', {
+const sequelize = new Sequelize(
+    
+    'tourbackend', 'root', '', {
     host: 'localhost',
     dialect: 'mysql',
     pool: {
@@ -8,6 +10,19 @@ const sequelize = new Sequelize('tourbackend', 'root', '', {
         idle: 10000
     }
 });
+// const sequelize = new Sequelize(
+
+//     'epiz_29616589_tourbackend', 'epiz_29616589', 'KzKCBOWuThXUVh', {
+//         host: 'sql311.epizy.com',
+//         port:3306,
+//     dialect: 'mysql',
+//     pool: {
+//         max: 5, logging: console.log,
+
+//         min: 0,
+//         idle: 10000, acquire: 30000,
+//     }
+// });
 
 //测试数据库链接
 sequelize.authenticate().then(function() {
@@ -22,10 +37,10 @@ exports.Sequelize = Sequelize;
 exports.sequelize = sequelize;
 
 // module.exports = {
-//     // HOST: "remotemysql.com",
-//     // USER: "xfZEcHQfNB",
-//     // PASSWORD: "5Oqvzfjg5S",
-//     // DB: "xfZEcHQfNB",
+//     // HOST: "sql311.epizy.com",
+//     // USER: "epiz_29616589",
+//     // PASSWORD: "KzKCBOWuThXUVh",
+//     // DB: "epiz_29616589_tourbackend",
 //     // dialect: "mysql",
 //     // pool: {
 //     //     max: 5,

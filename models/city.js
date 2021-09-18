@@ -24,11 +24,7 @@ module.exports = (sequelize, DataTypes) => {
              city_en_name: {
                 type: DataTypes.STRING,
 
-            },
-            state_id: {
-                type: DataTypes.INTEGER,
-
-            } ,
+            }
 
             
         } ,
