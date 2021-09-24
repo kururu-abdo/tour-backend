@@ -27,7 +27,16 @@ const io = require('socket.io')(server)
 //   console.log('Drop and Resync with { force: true }');
 // });
 
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'ejs')
+app.get('/', function (req, res) {
 
+  // Rendering our web page i.e. Demo.ejs
+  // and passing title variable through it
+  res.render('index', {
+    title: 'View Engine Demo'
+  })
+})
 
 app.set('socketio', io);
 app.use(express.json())
@@ -92,11 +101,6 @@ var upload_image = multer({
 app.use(device.capture());
 dotenv.config()
 app.use(auth.initialize());
-app.get('/me', (req, res) => {
-
-
-
-})
 
 app.use(function (req, res, next) {
   var err = new Error('Not Found');
@@ -114,16 +118,16 @@ app.use(function (err, req, res, next) {
   });
 });
 //db.sequelize.sync();
-router.get('/' ,  (req,res)=>{
+// router.get('/home' ,  (req,res)=>{
 
-  res.sendFile(path.join(__dirname + '/index.html'));
-})
-app.use('/', router);
+//   res.sendFile(path.join(__dirname + '/index.html'));
+// })
+// app.use('/', router);
 
-app.get('/all', (req, res) => {
-  user.findAll(req,res);
+// app.get('/', (req, res) => {
+//   user.findAll(req,res);
 
-})
+// })
 
 
 

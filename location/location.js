@@ -14,14 +14,22 @@ const { Op } = require("sequelize");
 const { json } = require('express');
 
 
+router.get("/" , (req , res , next)=>{
 
+    LocationType.findAll().then(function (result) {
+        res.render('location', {
+            order: result 
+        })
+    }).catch(next);
+  
+})
 
 router.get('/near', (req, res, next) => {
 
     var lat = req.query.lat;
     var lon = req.query.lon;
 
-    const nearByMeQuery = `SELECT location_id ,  location_en_name , location_ar_name, lat, lng, ((ACOS(SIN(lat * PI() / 180) * SIN(${lat} * PI() / 180) + COS(lat * PI() / 180) * COS(${lat} * PI() / 180) * COS((lng - ${lon}) * PI() / 180)) * 180 / PI()) * 60 * 1.1515 * 1.609344)  AS distance FROM locations HAVING    distance >  ' + {req.query.range} + ' ORDER BY distance`;
+    const nearByMeQuery = `SELECT location_id ,  location_en_name , location_ar_name, lat, lng, ((ACOS(SIN(lat * PI() / 180) * SIN(${lat} * PI() / 180) + COS(lat * PI() / 180) * COS(${lat} * PI() / 180) * COS((lng - ${lon}) * PI() / 180)) * 180 / PI()) * 60 * 1.1515 * 1.609344)  AS distance FROM locations HAVING    distance >  ' + ${req.query.range} + ' ORDER BY distance`;
     sequelize.query(
 
 
@@ -344,7 +352,118 @@ Facilitate.findAll({
 
 
 
+router.get("/get_location", (req, res, next) => {
+    Location.findAll({
+        attributes: {
+            inclued: [
 
+                [
+                    // Note the wrapping parentheses in the call below!
+                    sequelize.literal(`(
+                    SELECT COUNT(*)
+                    FROM likes AS reaction
+                    WHERE
+                        reaction.location_id = locations.location_id
+                      
+                )`),
+                    'likes'
+                ],
+
+
+
+
+                [
+                    // Note the wrapping parentheses in the call below!
+                    sequelize.literal(`(
+                    SELECT COUNT(*)
+                    FROM likes AS like
+                    WHERE
+                        locations.location_id = like.location_id
+                      
+                )`),
+                    'likes'
+                ],
+            ]
+        },
+        // order: [
+        //     [sequelize.literal('likes'), 'DESC']
+        // ] ,
+        include: [
+
+
+
+            {
+
+                model: db2.state
+
+
+            },
+            {
+
+                model: db2.city,
+
+
+            },
+
+            {
+
+                model: db2.tour_type, as: "type",
+
+
+
+
+            },
+
+            {
+
+                model: db2.location_pic
+
+
+            },
+            {
+                model: db2.location_tag, include: [db2.tag]
+            },
+
+
+
+            // {
+            //     model: db2.like,
+
+            // },
+
+            // {
+            //     model: db2.rank,
+            //     inclue: [
+            //         {
+            //             model: db2.user
+            //         }
+            //     ]
+
+            // }
+
+
+
+
+
+
+
+
+
+        ],
+
+where: {
+    location_id :  req.query.id
+}
+
+    }).then(function (result) {
+        res.json({
+            status: 1,
+            data: result
+        });
+    }).catch(next)
+
+
+})
 
 
 
@@ -498,6 +617,10 @@ router.get("/ilikeit", (req, res, next) => {
 
 router.get("/rating", async (req, res, next) => {
     var id = req.param("id");
+   
+
+
+
     var totalRanks = await db2.rank.count({
         where: {
             location_id: {
@@ -538,11 +661,30 @@ router.post("/rank", (req, res, next) => {
     var user = req.body.user_id;
     var location_id = req.body.location_id;
     var rate = req.body.rate;
-    db2.rank.create({
-        user_id: user,
-        location_id: location_id,
-        rank: rate
-    }).then(function (result) {
+
+    const sql = `  REPLACE INTO ranks 
+    (user_id ,location_id  , rank) 
+      VAlUES (${user} ,${location_id} , ${rate})`;
+   
+
+    sequelize.query(
+
+        sql ,{
+      //  'INSERT or  REPLACE INTO ranks (user_id ,location_id  , rank)   VAlUES (:id ,:user , :rank)   ', {
+       
+        type: sequelize.QueryTypes.INSERT ,
+       
+    //    replacements: { id: location_id,  user: user , rank: rate },
+       
+    })
+
+    // db2.rank.create({
+    //     user_id: user,
+    //     location_id: location_id,
+    //     rank: rate
+    // })
+    
+    .then(function (result) {
         res.json({
             status: 1,
             data: result
@@ -557,10 +699,18 @@ router.post("/like", (req, res, next) => {
 
     var user = req.body.user_id;
     var location_id = req.body.location_id;
-    db2.like.create({
-        user_id: user,
-        location_id: location_id
-    }).then((result)=>{
+  
+    sequelize.query('  REPLACE INTO likes(user_id ,location_id  )   VAlUES(:user ,  :id  )   ', {
+        replacements: { id: location_id, user: user },
+        type: sequelize.QueryTypes.INSERT
+    })
+  
+    // db2.like.create({
+    //     user_id: user,
+    //     location_id: location_id
+    // })
+    
+    .then((result)=>{
    
         res.json({
             status: 1,

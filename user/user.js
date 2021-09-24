@@ -377,7 +377,238 @@ router.get('/login', async (req, res , next) => {
 
 
 })
+router.post("/reset_password", (req, res, next) => {
 
+    sb2.user.update({
+        password : req.body.password
+    } ,
+  {  
+    where :{
+user_id :  req.body.id
+    }
+}
+    
+    ).then(function (result) {
+            res.json({
+                status: 1,
+                data: result
+            })
+      
+
+
+    }).catch(next);
+
+
+}  )
+
+
+router.post("/update", (req, res, next) => {
+
+    sb2.user.update({
+        user_name: req.body.name ,
+        country_id :req.body.country_id ,
+        address : req.body.country ,
+        phone: req.body.phone
+
+
+    },
+        {
+            where: {
+                user_id: req.body.id 
+            }
+        }
+
+    ).then(function (result) {
+        res.json({
+            status: 1,
+            data: result
+        })
+
+
+
+    }).catch(next);
+
+
+})
+
+
+
+router.post("/update_image", (req, res, next) => {
+
+    sb2.user.update({
+        pic: req.body.pic,
+       
+
+    },
+        {
+            where: {
+                user_id: req.body.id
+            }
+        }
+
+    ).then(function (result) {
+        res.json({
+            status: 1,
+            data: result
+        })
+
+
+
+    }).catch(next);
+
+
+})
+
+
+
+
+
+
+router.get('/fetch', async (req, res, next) => {
+
+    //get user data
+    var id = req.query.id;
+   
+    
+    //send data to mysql
+
+    User.findAll({
+        where: {
+            user_id  : id,
+
+            //     phone: phone
+            //  ,
+          
+
+        },
+        include: [{
+
+            model: db2.userType, as: "user_type"
+
+
+        }, {
+            model: db2.country, as: "country",
+        }]
+    }).then(function (result) {
+        if (result.length > 0) {
+            res.json({
+                status: 1,
+                data: result
+            })
+        } else {
+            res.status(404).json({
+                status: -1,
+                data: "Wrong phone/password"
+            })
+        }
+
+
+    }).catch(next);
+
+
+
+
+
+    //     db.query({
+    //         sql: 'select A.* ,  B.*  from user A RIGHT JOIN country B on  A.country_id=B.country_id   WHERE  A.phone =? AND A.password =?',
+    //         //     timeout: 40000, // 40s
+    //         values: [phone, password]
+    //         //    nestTables:"_"
+    //     }, function (error, rows) {
+    //         console.log(error);
+    //         var result = [], index = {};
+    //         if (error) {
+    //             res.status(500).json({
+    //                 "message": "server error  ,  plz try later"
+    //             })
+    //         }
+
+    //         console.log(rows);
+    // if(rows.length>0){
+
+    //     rows.forEach(row => {
+    //         if (!(row.user_id in index)) {
+    //             index[row.user_id] = {
+    //                 user_id: row.user_id,
+    //                 name: row.user_name,
+    //                 address: row.address,
+    //                 phone: row.phone,
+    //                 email: row.email,
+    //                 password: row.password,
+
+    //                 country: {
+
+    //                     country_id: row.country_id,
+    //                      country_ar_name: row.country_ar_name,
+    //                      country_en_name: row.county_en_name ,
+    //                     country_code:  row.country_code
+    //                 }
+
+    //             };
+
+
+
+    //             result.push(index[row.user_id])
+    //         }
+
+    //         // index[row.user_id].country = {
+    //         //     id: row.country_id,
+    //         //     ar_name: row.country_ar_name,
+    //         //     en_name: row.county_en_name
+    //         // }
+    //     });
+
+    //     res.status(200).json({
+    //         "status": true,
+    //         "msg": "login done succesfullty ",
+    //         "data": result
+    //     })
+
+    // }else{
+    //     res.status(404).json({
+    //         "status": false,
+    //         "msg": "password/email not correct"
+    //     })
+    // }
+
+
+
+
+    //         // res.status(200).json({
+
+    //         //     "data": results
+    //         // })
+    //     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+})
 module.exports = function (io) {
     //Socket.IO
     io.on('connection', function (socket) {
