@@ -1,16 +1,23 @@
 var mysql = require('mysql');
 
 
+// var connection = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root',
+//     password: '',
+//     database: 'sql4423528',
+//     parseJSON: true,
+
+// });
+
 var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'sql4423528',
+    host: 'sql5.freemysqlhosting.net',
+    user: 'sql5453000',
+    password: 'NK26Xz8LaQ',
+    database: 'sql5453000',
     parseJSON: true,
 
 });
-
-
 
 /*
 
