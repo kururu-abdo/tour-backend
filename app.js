@@ -181,5 +181,5 @@ io.on('connection', () => {
 });
 
 server.listen(process.env.PORT || 5000, () => {
-  console.log(`Example app listening at http://localhost:${process.env.PORT}`)
+  console.log(`Example app listening at port 8000`)
 })
