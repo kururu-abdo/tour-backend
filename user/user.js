@@ -2,17 +2,17 @@ const express = require('express')
 const router = express.Router();
 const db = require('../db/db')
 const db2 = require('../models')
-var { sequelize }  =  require("../config/db.config")
+var { sequelize } = require("../config/db.config")
 const { Op } = require("sequelize");
 
 // var User = sequelize.import("../models/user")
 var User = db2.user;
-router.get('/data', (req, res ,  next) => { 
-        console.log(req.query.data);
-    res.json({data: req.query.data})
+router.get('/data', (req, res, next) => {
+    console.log(req.query.data);
+    res.json({ data: req.query.data })
 })
 
-router.post('/signup', (req, res ,  next) => {
+router.post('/signup', (req, res, next) => {
 
     //get data  from user 
 
@@ -29,21 +29,21 @@ router.post('/signup', (req, res ,  next) => {
     var address = req.param('address')
 
     var country = req.param('country_id')
-   
-    var image =  req.param("pic") ;    
-    User.create ({
-    user_name: name,
-    email :  email ,
-    phone :phone ,
-    password: password ,
-    address : address ,
-    country_id : country ,
-        userTypeTypeId:1 ,
-        pic  : image  || ""
+
+    var image = req.param("pic");
+    User.create({
+        user_name: name,
+        email: email,
+        phone: phone,
+        password: password,
+        address: address,
+        country_id: country,
+        userTypeTypeId: 1,
+        pic: image || ""
 
     }).then(function (result) {
         res.json({
-            status:1, 
+            status: 1,
             data: result
         })
     }).catch(next);
@@ -87,14 +87,19 @@ router.post('/signup', (req, res ,  next) => {
 
 
 });
-router.get('/users', (req, res ,  next) => {
+router.get('/us' , (req , res)=>{
+    var users = [{id:1 , name:"Kururu"}]
+
+    res.send(users)
+})
+router.get('/all', (req, res, next) => {
     User.findAll({
         include: [{
-         
-            model: db2.userType, as:"user_type"
-            
 
-        } ,{
+            model: db2.userType, as: "user_type"
+
+
+        }, {
             model: db2.country, as: "country",
         }]
     }).then(function (users) {
@@ -111,17 +116,17 @@ router.get('/all', async (req, res) => {
 
     db.query({
         sql: 'select A.* ,  B.*    from user A  RIGHT    JOIN country  B   on A.country_id=B.country_id',
-    //     timeout: 40000, // 40s
-    //    nestTables:"_"
+        //     timeout: 40000, // 40s
+        //    nestTables:"_"
     }, function (error, rows) {
         var result = [], index = {};
         if (error) {
             throw error
         }
 
-console.log(rows.length);
+        console.log(rows.length);
         rows.forEach(row => {
-          
+
 
             if (!(row.user_id in index)) {
                 console.log(row.country_code);
@@ -227,11 +232,11 @@ console.log(rows.length);
     // })
 })
 
-router.get('/login', async (req, res , next) => {
+router.get('/login', async (req, res, next) => {
 
     //get user data
-    var phone = req.query.phone ||"";
-    var password = req.query.password ;
+    var phone = req.query.phone || "";
+    var password = req.query.password;
     var email = req.query.email || "";
 
     console.log(phone)
@@ -239,246 +244,14 @@ router.get('/login', async (req, res , next) => {
 
     User.findAll({
         where: {
-            password: password ,
+            password: password,
 
-        //     phone: phone
-        //  ,
+            //     phone: phone
+            //  ,
             [Op.or]: [
                 { phone: phone },
                 { email: email }
             ]
-            
-        } ,
-        include: [{
-
-            model: db2.userType, as: "user_type"
-
-
-        }, {
-            model: db2.country, as: "country",
-        }]
-    }).then(function (result) {
-        if (result.length>0) {
-            res.json({
-                status: 1,
-                data: result
-            })
-        } else {
-            res.status(404).json({
-                status: -1,
-                data: "Wrong phone/password"
-            })
-        }
-       
-        
-    }).catch(next);
-    
-    
-
-
-
-//     db.query({
-//         sql: 'select A.* ,  B.*  from user A RIGHT JOIN country B on  A.country_id=B.country_id   WHERE  A.phone =? AND A.password =?',
-//         //     timeout: 40000, // 40s
-//         values: [phone, password]
-//         //    nestTables:"_"
-//     }, function (error, rows) {
-//         console.log(error);
-//         var result = [], index = {};
-//         if (error) {
-//             res.status(500).json({
-//                 "message": "server error  ,  plz try later"
-//             })
-//         }
-
-//         console.log(rows);
-// if(rows.length>0){
-
-//     rows.forEach(row => {
-//         if (!(row.user_id in index)) {
-//             index[row.user_id] = {
-//                 user_id: row.user_id,
-//                 name: row.user_name,
-//                 address: row.address,
-//                 phone: row.phone,
-//                 email: row.email,
-//                 password: row.password,
-
-//                 country: {
-
-//                     country_id: row.country_id,
-//                      country_ar_name: row.country_ar_name,
-//                      country_en_name: row.county_en_name ,
-//                     country_code:  row.country_code
-//                 }
-
-//             };
-
-
-
-//             result.push(index[row.user_id])
-//         }
-
-//         // index[row.user_id].country = {
-//         //     id: row.country_id,
-//         //     ar_name: row.country_ar_name,
-//         //     en_name: row.county_en_name
-//         // }
-//     });
-
-//     res.status(200).json({
-//         "status": true,
-//         "msg": "login done succesfullty ",
-//         "data": result
-//     })
-
-// }else{
-//     res.status(404).json({
-//         "status": false,
-//         "msg": "password/email not correct"
-//     })
-// }
-
-
-
-     
-//         // res.status(200).json({
-
-//         //     "data": results
-//         // })
-//     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-})
-router.post("/reset_password", (req, res, next) => {
-
-    sb2.user.update({
-        password : req.body.password
-    } ,
-  {  
-    where :{
-user_id :  req.body.id
-    }
-}
-    
-    ).then(function (result) {
-            res.json({
-                status: 1,
-                data: result
-            })
-      
-
-
-    }).catch(next);
-
-
-}  )
-
-
-router.post("/update", (req, res, next) => {
-
-    sb2.user.update({
-        user_name: req.body.name ,
-        country_id :req.body.country_id ,
-        address : req.body.country ,
-        phone: req.body.phone
-
-
-    },
-        {
-            where: {
-                user_id: req.body.id 
-            }
-        }
-
-    ).then(function (result) {
-        res.json({
-            status: 1,
-            data: result
-        })
-
-
-
-    }).catch(next);
-
-
-})
-
-
-
-router.post("/update_image", (req, res, next) => {
-
-    sb2.user.update({
-        pic: req.body.pic,
-       
-
-    },
-        {
-            where: {
-                user_id: req.body.id
-            }
-        }
-
-    ).then(function (result) {
-        res.json({
-            status: 1,
-            data: result
-        })
-
-
-
-    }).catch(next);
-
-
-})
-
-
-
-
-
-
-router.get('/fetch', async (req, res, next) => {
-
-    //get user data
-    var id = req.query.id;
-   
-    
-    //send data to mysql
-
-    User.findAll({
-        where: {
-            user_id  : id,
-
-            //     phone: phone
-            //  ,
-          
 
         },
         include: [{
@@ -609,15 +382,394 @@ router.get('/fetch', async (req, res, next) => {
 
 
 })
+router.post("/reset_password", (req, res, next) => {
+    console.log(req.body.password);
+    db2.user.update({
+        password: req.body.password
+    },
+        {
+            where: {
+                user_id: req.body.id
+            }
+        }
+
+    ).then(function (result) {
+        console.log(result);
+        res.status(200).json({
+            status: 1,
+            data: result
+        })
+
+
+
+    }).catch(next);
+
+
+})
+
+
+router.post("/update", (req, res, next) => {
+    console.log(req.body);
+    db2.user.update({
+        user_name: req.body.name,
+        country_id: req.body.country_id,
+        address: req.body.address,
+        phone: req.body.phone
+
+
+    },
+        {
+            where: {
+                user_id: req.body.id
+            }
+        }
+
+    ).then(function (result) {
+        res.json({
+            status: 1,
+            data: "user updated successfully!"
+        })
+
+
+
+    }).catch(next);
+
+
+})
+
+
+
+router.post("/update_image", (req, res, next) => {
+
+    sb2.user.update({
+        pic: req.body.pic,
+
+
+    },
+        {
+            where: {
+                user_id: req.body.id
+            }
+        }
+
+    ).then(function (result) {
+        res.json({
+            status: 1,
+            data: result
+        })
+
+
+
+    }).catch(next);
+
+
+})
+
+
+
+
+
+
+router.get('/fetch', async (req, res, next) => {
+
+    //get user data
+    var id = req.query.id;
+
+
+    //send data to mysql
+
+    User.findAll({
+        where: {
+            user_id: id,
+
+            //     phone: phone
+            //  ,
+
+
+        },
+        include: [{
+
+            model: db2.userType, as: "user_type"
+
+
+        }, {
+            model: db2.country, as: "country",
+        }]
+    }).then(function (result) {
+        if (result.length > 0) {
+            res.json({
+                status: 1,
+                data: result
+            })
+        } else {
+            res.status(404).json({
+                status: -1,
+                data: "Wrong phone/password"
+            })
+        }
+
+
+    }).catch(next);
+
+
+
+
+
+    //     db.query({
+    //         sql: 'select A.* ,  B.*  from user A RIGHT JOIN country B on  A.country_id=B.country_id   WHERE  A.phone =? AND A.password =?',
+    //         //     timeout: 40000, // 40s
+    //         values: [phone, password]
+    //         //    nestTables:"_"
+    //     }, function (error, rows) {
+    //         console.log(error);
+    //         var result = [], index = {};
+    //         if (error) {
+    //             res.status(500).json({
+    //                 "message": "server error  ,  plz try later"
+    //             })
+    //         }
+
+    //         console.log(rows);
+    // if(rows.length>0){
+
+    //     rows.forEach(row => {
+    //         if (!(row.user_id in index)) {
+    //             index[row.user_id] = {
+    //                 user_id: row.user_id,
+    //                 name: row.user_name,
+    //                 address: row.address,
+    //                 phone: row.phone,
+    //                 email: row.email,
+    //                 password: row.password,
+
+    //                 country: {
+
+    //                     country_id: row.country_id,
+    //                      country_ar_name: row.country_ar_name,
+    //                      country_en_name: row.county_en_name ,
+    //                     country_code:  row.country_code
+    //                 }
+
+    //             };
+
+
+
+    //             result.push(index[row.user_id])
+    //         }
+
+    //         // index[row.user_id].country = {
+    //         //     id: row.country_id,
+    //         //     ar_name: row.country_ar_name,
+    //         //     en_name: row.county_en_name
+    //         // }
+    //     });
+
+    //     res.status(200).json({
+    //         "status": true,
+    //         "msg": "login done succesfullty ",
+    //         "data": result
+    //     })
+
+    // }else{
+    //     res.status(404).json({
+    //         "status": false,
+    //         "msg": "password/email not correct"
+    //     })
+    // }
+
+
+
+
+    //         // res.status(200).json({
+
+    //         //     "data": results
+    //         // })
+    //     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+})
+
+
+
+
+router.get('/users', async (req, res, next) => {
+
+    //get user data
+
+
+    //send data to mysql
+
+    User.findAll({
+    
+        include: [{
+
+            model: db2.userType, as: "user_type"
+
+
+        }, {
+            model: db2.country, as: "country",
+        }]
+    }).then(function (result) {
+        if (result.length > 0) {
+            res.json({
+                status: 1,
+                data: result
+            })
+        } else {
+            res.status(404).json({
+                status: -1,
+                data: "Wrong phone/password"
+            })
+        }
+
+
+    }).catch(next);
+
+
+
+
+
+    //     db.query({
+    //         sql: 'select A.* ,  B.*  from user A RIGHT JOIN country B on  A.country_id=B.country_id   WHERE  A.phone =? AND A.password =?',
+    //         //     timeout: 40000, // 40s
+    //         values: [phone, password]
+    //         //    nestTables:"_"
+    //     }, function (error, rows) {
+    //         console.log(error);
+    //         var result = [], index = {};
+    //         if (error) {
+    //             res.status(500).json({
+    //                 "message": "server error  ,  plz try later"
+    //             })
+    //         }
+
+    //         console.log(rows);
+    // if(rows.length>0){
+
+    //     rows.forEach(row => {
+    //         if (!(row.user_id in index)) {
+    //             index[row.user_id] = {
+    //                 user_id: row.user_id,
+    //                 name: row.user_name,
+    //                 address: row.address,
+    //                 phone: row.phone,
+    //                 email: row.email,
+    //                 password: row.password,
+
+    //                 country: {
+
+    //                     country_id: row.country_id,
+    //                      country_ar_name: row.country_ar_name,
+    //                      country_en_name: row.county_en_name ,
+    //                     country_code:  row.country_code
+    //                 }
+
+    //             };
+
+
+
+    //             result.push(index[row.user_id])
+    //         }
+
+    //         // index[row.user_id].country = {
+    //         //     id: row.country_id,
+    //         //     ar_name: row.country_ar_name,
+    //         //     en_name: row.county_en_name
+    //         // }
+    //     });
+
+    //     res.status(200).json({
+    //         "status": true,
+    //         "msg": "login done succesfullty ",
+    //         "data": result
+    //     })
+
+    // }else{
+    //     res.status(404).json({
+    //         "status": false,
+    //         "msg": "password/email not correct"
+    //     })
+    // }
+
+
+
+
+    //         // res.status(200).json({
+
+    //         //     "data": results
+    //         // })
+    //     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+})
+
+
+
+
+
 module.exports = function (io) {
     //Socket.IO
     io.on('connection', function (socket) {
-     
+
         socket.on("update", (data) => {
 
             //  io.emit("update" ,    )
         })
-        
+
     });
     return router;
 };

@@ -1,28 +1,28 @@
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize(
-    
-    'tourbackend', 'root', '', {
-    host: 'localhost',
-    dialect: 'mysql',
-    pool: {
-        max: 5,
-        min: 0,
-        idle: 10000
-    }
-});
 // const sequelize = new Sequelize(
-
-//     'epiz_29616589_tourbackend', 'epiz_29616589', 'KzKCBOWuThXUVh', {
-//         host: 'sql311.epizy.com',
-//         port:3306,
+    
+//     'tourbackend', 'root', '', {
+//     host: 'localhost',
 //     dialect: 'mysql',
 //     pool: {
-//         max: 5, logging: console.log,
-
+//         max: 5,
 //         min: 0,
-//         idle: 10000, acquire: 30000,
+//         idle: 10000
 //     }
 // });
+const sequelize = new Sequelize(
+
+    'sql5453000', 'sql5453000', 'NK26Xz8LaQ', {
+        host: 'sql5.freemysqlhosting.net',
+        port:3306,
+    dialect: 'mysql',
+    pool: {
+        max: 5, logging: console.log,
+
+        min: 0,
+        idle: 10000, acquire: 30000,
+    }
+});
 
 //测试数据库链接
 sequelize.authenticate().then(function() {

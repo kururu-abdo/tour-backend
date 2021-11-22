@@ -74,7 +74,7 @@ db.rank = require("./rank")(sequelize, Sequelize);
 db.tag = require("./tag")(sequelize, Sequelize);
 db.location_tag = require("./location_tag")(sequelize, Sequelize);
 db.tour_facilitate_location = require("./location_facilitate")(sequelize, Sequelize);
-
+db.company = require('./company')(sequelize, Sequelize);
 //relationships  💏 😗 😙  😚 
 //add some cnages
 

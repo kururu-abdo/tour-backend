@@ -24,18 +24,25 @@ router.get("/" , (req , res , next)=>{
   
 })
 
+
+  
+
+
 router.get('/near', (req, res, next) => {
 
     var lat = req.query.lat;
     var lon = req.query.lon;
+    var range= req.query.range||10;
 
-    const nearByMeQuery = `SELECT location_id ,  location_en_name , location_ar_name, lat, lng, ((ACOS(SIN(lat * PI() / 180) * SIN(${lat} * PI() / 180) + COS(lat * PI() / 180) * COS(${lat} * PI() / 180) * COS((lng - ${lon}) * PI() / 180)) * 180 / PI()) * 60 * 1.1515 * 1.609344)  AS distance FROM locations HAVING    distance >  ' + ${req.query.range} + ' ORDER BY distance`;
+    const query2 = `SELECT location_id ,  location_en_name , location_ar_name, lat, lng, ((ACOS(SIN(${lat} * PI() / 180) * SIN(lat * PI() / 180) + COS(${lat} * PI() / 180) * COS(lat * PI() / 180) * COS((${lon} - lng) * PI() / 180)) * 180 / PI()) * 60 * 1.1515 * 1.609344) as distance FROM locations HAVING distance <= ${req.query.range} ORDER BY distance ASC`;
+    const nearByMeQuery = `SELECT location_id ,  location_en_name , location_ar_name, lat, lng, ((ACOS(SIN(lat * PI() / 180) * SIN(${lat} * PI() / 180) + COS(lat * PI() / 180) * COS(${lat} * PI() / 180) * COS((lng - ${lon}) * PI() / 180)) * 180 / PI()) * 60 * 1.1515 * 1.609344)  AS distance FROM locations HAVING    distance > ' +  10 + ' ORDER BY distance`;
     sequelize.query(
 
 
+  query2
 
-
-        nearByMeQuery, {
+       // nearByMeQuery
+        , {
         model: Location,
         mapToModel: true, // pass true here if you have any mapped fields ,
 
@@ -775,6 +782,46 @@ router.get("/comments/:id", (req, res, next) => {
 })
 
 
+
+
+
+
+router.get("/comments", (req, res, next) => {
+    
+
+    db2.comment.findAll({
+        
+        include: [
+
+
+
+            {
+
+                model: db2.user,  
+                include :[
+                  { model: db2.country, as:"country"}
+
+                ]
+
+            } ,
+            {
+                model: db2.location
+            }
+            
+
+        ],
+        
+                
+    }).then(function (result) {
+        res.json({
+            status: 1,
+            data: result
+        })
+    }).catch(next);
+
+
+
+})
 
 
 

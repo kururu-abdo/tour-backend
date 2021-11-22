@@ -1,32 +1,38 @@
 
 
 module.exports = (sequelize, DataTypes) => {
-
-
-
-
     const company = sequelize.define("company",
 
 
         {
 
 
-            id : {
+            id: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
                 autoIncrement: true
             },
+            ar_about:{
+                type: DataTypes.STRING(1234) ,
+            } ,
+            en_about:{
+                type: DataTypes.STRING(1234) ,
+            },
 
 
-           ar_name: {
+            ar_name: {
                 type: DataTypes.STRING,
 
             },
-           en_name: {
+            en_name: {
                 type: DataTypes.STRING,
 
             },
-            address: {
+            ar_address: {
+                type: DataTypes.STRING,
+
+            },
+           en_address: {
                 type: DataTypes.STRING,
 
             },
@@ -43,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
 
             },
 
-        } ,
+        },
         {
             timestamps: false,
         }

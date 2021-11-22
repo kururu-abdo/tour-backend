@@ -8,7 +8,8 @@ var geoip = require('geoip-lite');
 const dotenv = require("dotenv")
 let jwt = require('jwt-simple');
 const user = require('./controllers/user/userController');
-
+const https = require("https")
+const store =require("localStorage")
 var bodyParser = require('body-parser')
 var auth = require('./config/passport')()
 const router = express.Router();
@@ -21,7 +22,11 @@ const io = require('socket.io')(server)
 // // tourist facilities
 // force: false, alter: true
 //force: true
+var cors = require('cors');
 
+
+
+app.use(cors());
 
 // db.sequelize.sync({ force: false, alter: true}).then(() => {
 //   console.log('Drop and Resync with { force: true }');
@@ -61,6 +66,7 @@ var locations = require('./location/location')(io)
 app.use('/user', require('./user/user')(io))
 app.use('/country' ,  require('./country/country'))
 app.use('/location',locations)
+app.use('/company', require('./company/Company'))
 
 
 app.post('/upload', function (req, res) {
@@ -110,10 +116,13 @@ app.use(function (req, res, next) {
 
 app.use(function (err, req, res, next) {
   // render the error page
+  console.log(
+    "//////////////////////////////////////"
+  );
   console.log(err);
   res.status(err.status || 500);
   res.json({
-    status: 0,
+    status: err.status,
     data: err.message
   });
 });
@@ -138,7 +147,34 @@ app.use(function (err, req, res, next) {
 //   res.status(400).send({ error: error.message })
 // })
 
+function getUrl() {
+  let url = "https://api.jsonstorage.net/v1/json/a0f018c1-ace1-4780-bc28-33faf9700066";
 
+  https.get(url, (res) => {
+    let body = "";
+
+    res.on("data", (chunk) => {
+      body += chunk;
+    });
+
+    res.on("end", () => {
+      try {
+       // var localStorage = new store('./scratch');
+
+        //Setting localStorage Item
+        store.setItem('Name', 'Manish Mandal')
+        let json = JSON.parse(body);
+        console.log(json);
+        // do something with JSON
+      } catch (error) {
+        console.error(error.message);
+      };
+    });
+
+  }).on("error", (error) => {
+    console.error(error.message);
+  });
+}
 io.on('connection', () => {
 
   console.log("CONNECTED");
