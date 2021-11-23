@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
 
 
 
-    const userType = sequelize.define("userType",
+    const userType = sequelize.define("usertypes",
 
 
         {
