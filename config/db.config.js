@@ -10,6 +10,7 @@ const Sequelize = require('sequelize');
 //         idle: 10000
 //     }
 // });
+
 const sequelize = new Sequelize(
 
     'sql5453000', 'sql5453000', 'NK26Xz8LaQ', {

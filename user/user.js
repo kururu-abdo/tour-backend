@@ -762,6 +762,9 @@ router.get('/users', async (req, res, next) => {
 
 
 module.exports = function (io) {
+
+    //emit to user
+    
     //Socket.IO
     io.on('connection', function (socket) {
 

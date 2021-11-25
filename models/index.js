@@ -75,6 +75,9 @@ db.tag = require("./tag")(sequelize, Sequelize);
 db.location_tag = require("./location_tag")(sequelize, Sequelize);
 db.tour_facilitate_location = require("./location_facilitate")(sequelize, Sequelize);
 db.company = require('./company')(sequelize, Sequelize);
+db.log = require('./logs')(sequelize, Sequelize);
+
+
 //relationships  💏 😗 😙  😚 
 //add some cnages
 
@@ -153,9 +156,9 @@ db.user.belongsTo(db.userType ,{
 
 
 
-db.userType.hasMany(db.user ,  {
-  
-})
+// db.userType.hasMany(db.user ,  {
+//   as: "user_type2"
+// })
 
 
 
@@ -163,7 +166,7 @@ db.user.belongsTo(db.country, {
   foreignKey: "country_id",
   as: 'country'
 });
-db.country.hasMany(db.user ,{})
+// db.country.hasMany(db.user, { foreignKey: "country_id2",})
 
 //like
 

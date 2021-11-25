@@ -6,7 +6,7 @@ var LocationType = db2.tour_type;
 var Location = db2.location;
 var TourLocation = db2.tour_location;
 var Facilitate_location = db2.tour_facilitate_location;
-var workTimes =  db2.work_time;
+var workTimes = db2.work_time;
 var Facilitate = db2.facilitate_location;
 const day = db2.day;
 const { sequelize } = require("../config/db.config");
@@ -14,39 +14,39 @@ const { Op } = require("sequelize");
 const { json } = require('express');
 
 
-router.get("/" , (req , res , next)=>{
+router.get("/", (req, res, next) => {
 
     LocationType.findAll().then(function (result) {
         res.render('location', {
-            order: result 
+            order: result
         })
     }).catch(next);
-  
+
 })
 
 
-  
+
 
 
 router.get('/near', (req, res, next) => {
 
     var lat = req.query.lat;
     var lon = req.query.lon;
-    var range= req.query.range||10;
+    var range = req.query.range || 10;
 
     const query2 = `SELECT location_id ,  location_en_name , location_ar_name, lat, lng, ((ACOS(SIN(${lat} * PI() / 180) * SIN(lat * PI() / 180) + COS(${lat} * PI() / 180) * COS(lat * PI() / 180) * COS((${lon} - lng) * PI() / 180)) * 180 / PI()) * 60 * 1.1515 * 1.609344) as distance FROM locations HAVING distance <= ${req.query.range} ORDER BY distance ASC`;
     const nearByMeQuery = `SELECT location_id ,  location_en_name , location_ar_name, lat, lng, ((ACOS(SIN(lat * PI() / 180) * SIN(${lat} * PI() / 180) + COS(lat * PI() / 180) * COS(${lat} * PI() / 180) * COS((lng - ${lon}) * PI() / 180)) * 180 / PI()) * 60 * 1.1515 * 1.609344)  AS distance FROM locations HAVING    distance > ' +  10 + ' ORDER BY distance`;
     sequelize.query(
 
 
-  query2
+        query2
 
-       // nearByMeQuery
+        // nearByMeQuery
         , {
-        model: Location,
-        mapToModel: true, // pass true here if you have any mapped fields ,
+            model: Location,
+            mapToModel: true, // pass true here if you have any mapped fields ,
 
-    }
+        }
 
 
     )
@@ -149,17 +149,17 @@ router.get('/near', (req, res, next) => {
 })
 
 
-router.get('/work_times/:id', (req, res, next) => { 
-  var id = req.param("id");
+router.get('/work_times/:id', (req, res, next) => {
+    var id = req.param("id");
     workTimes.findAll({
 
-       include:[
-           {
-               model:day
-           }
-       ],
-        where :  {
-            facilitateLocationFcilitateLocId :  id
+        include: [
+            {
+                model: day
+            }
+        ],
+        where: {
+            facilitateLocationFcilitateLocId: id
         }
     }).then(function name(result) {
         res.json({
@@ -169,7 +169,7 @@ router.get('/work_times/:id', (req, res, next) => {
     }).catch(next);
 
 
- })
+})
 
 
 router.get('/types', (req, res, next) => {
@@ -241,26 +241,26 @@ router.get("/facilitate", (req, res, next) => {
     var type = req.param("type");
     console.log("---------------------FETCH FACILITATE LOCATIONS-------------------------");
     Facilitate_location.findAll({
-       
+
         include: [
-          
+
 
             // {
             //     model: db2.location,
 
             // },
             {
-                model: db2.facilitate_location ,
-            //     include:[ 
-            //         {
-            //             model : db2.facilitate_location_type ,
-                    
-            //           where :{
-            //               type_id: type
-            //           }
-            //         }
-            //    ]
-            } ,
+                model: db2.facilitate_location,
+                //     include:[ 
+                //         {
+                //             model : db2.facilitate_location_type ,
+
+                //           where :{
+                //               type_id: type
+                //           }
+                //         }
+                //    ]
+            },
             {
                 model: db2.facilitate_location_type,
 
@@ -304,8 +304,8 @@ router.get("/facilitate", (req, res, next) => {
 
         where: {
             location_id: location_id,
-            type_id  :  type
-            
+            type_id: type
+
         }
 
 
@@ -326,33 +326,33 @@ router.get("/facilitate", (req, res, next) => {
 })
 
 
-router.get("/facilitate_loc", (req, res, next) =>{
+router.get("/facilitate_loc", (req, res, next) => {
 
-Facilitate.findAll({
+    Facilitate.findAll({
 
-    incluede: [
-
-
-        {
-            model: db2.facilitate_location_type,
-
-        }
-
-    
-    
-    ]
+        incluede: [
 
 
-})
+            {
+                model: db2.facilitate_location_type,
 
-.then(function (result) {
-    res.json({
-        status: 1,
-        data: result
-    });
+            }
 
 
-}).catch(next);
+
+        ]
+
+
+    })
+
+        .then(function (result) {
+            res.json({
+                status: 1,
+                data: result
+            });
+
+
+        }).catch(next);
 
 
 })
@@ -458,9 +458,9 @@ router.get("/get_location", (req, res, next) => {
 
         ],
 
-where: {
-    location_id :  req.query.id
-}
+        where: {
+            location_id: req.query.id
+        }
 
     }).then(function (result) {
         res.json({
@@ -601,13 +601,13 @@ router.get("/likes", (req, res, next) => {
 })
 router.get("/ilikeit", (req, res, next) => {
     var id = req.param("id");
-    var user =  req.param("user_id");
+    var user = req.param("user_id");
     db2.like.count({
         where: {
             location_id: {
                 [Op.eq]: id
-            } ,
-            user_id:{
+            },
+            user_id: {
                 [Op.eq]: user
             }
         }
@@ -624,7 +624,7 @@ router.get("/ilikeit", (req, res, next) => {
 
 router.get("/rating", async (req, res, next) => {
     var id = req.param("id");
-   
+
 
 
 
@@ -664,7 +664,7 @@ router.get("/rating", async (req, res, next) => {
     }).catch(next);
 })
 router.post("/rank", (req, res, next) => {
-   
+
     var user = req.body.user_id;
     var location_id = req.body.location_id;
     var rate = req.body.rate;
@@ -672,31 +672,31 @@ router.post("/rank", (req, res, next) => {
     const sql = `  REPLACE INTO ranks 
     (user_id ,location_id  , rank) 
       VAlUES (${user} ,${location_id} , ${rate})`;
-   
+
 
     sequelize.query(
 
-        sql ,{
-      //  'INSERT or  REPLACE INTO ranks (user_id ,location_id  , rank)   VAlUES (:id ,:user , :rank)   ', {
-       
-        type: sequelize.QueryTypes.INSERT ,
-       
-    //    replacements: { id: location_id,  user: user , rank: rate },
-       
+        sql, {
+        //  'INSERT or  REPLACE INTO ranks (user_id ,location_id  , rank)   VAlUES (:id ,:user , :rank)   ', {
+
+        type: sequelize.QueryTypes.INSERT,
+
+        //    replacements: { id: location_id,  user: user , rank: rate },
+
     })
 
-    // db2.rank.create({
-    //     user_id: user,
-    //     location_id: location_id,
-    //     rank: rate
-    // })
-    
-    .then(function (result) {
-        res.json({
-            status: 1,
-            data: result
-        })
-    }).catch(next);
+        // db2.rank.create({
+        //     user_id: user,
+        //     location_id: location_id,
+        //     rank: rate
+        // })
+
+        .then(function (result) {
+            res.json({
+                status: 1,
+                data: result
+            })
+        }).catch(next);
 
 
 })
@@ -706,24 +706,24 @@ router.post("/like", (req, res, next) => {
 
     var user = req.body.user_id;
     var location_id = req.body.location_id;
-  
+
     sequelize.query('  REPLACE INTO likes(user_id ,location_id  )   VAlUES(:user ,  :id  )   ', {
         replacements: { id: location_id, user: user },
         type: sequelize.QueryTypes.INSERT
     })
-  
-    // db2.like.create({
-    //     user_id: user,
-    //     location_id: location_id
-    // })
-    
-    .then((result)=>{
-   
-        res.json({
-            status: 1,
-            data: result
-        })
-    }).catch(next);
+
+        // db2.like.create({
+        //     user_id: user,
+        //     location_id: location_id
+        // })
+
+        .then((result) => {
+
+            res.json({
+                status: 1,
+                data: result
+            })
+        }).catch(next);
 
 
 
@@ -765,7 +765,7 @@ router.get("/comments/:id", (req, res, next) => {
 
 
             },
-           
+
         ],
         where: {
             locationLocationId: id
@@ -787,31 +787,31 @@ router.get("/comments/:id", (req, res, next) => {
 
 
 router.get("/comments", (req, res, next) => {
-    
+
 
     db2.comment.findAll({
-        
+
         include: [
 
 
 
             {
 
-                model: db2.user,  
-                include :[
-                  { model: db2.country, as:"country"}
+                model: db2.user,
+                include: [
+                    { model: db2.country, as: "country" }
 
                 ]
 
-            } ,
+            },
             {
                 model: db2.location
             }
-            
+
 
         ],
-        
-                
+
+
     }).then(function (result) {
         res.json({
             status: 1,
@@ -951,7 +951,7 @@ router.get('/filter', (req, res, next) => {
 
 
 
-    
+
     Location.findAll({
         include: [
 
@@ -1191,7 +1191,7 @@ router.get("/search", (req, res, next) => {
 
 })
 
-router.get("/facilitate_types" ,  (req , res,next)=>{
+router.get("/facilitate_types", (req, res, next) => {
     db2.facilitate_location_type.findAll({})
         .then(function (result) {
             res.json({
@@ -1199,8 +1199,8 @@ router.get("/facilitate_types" ,  (req , res,next)=>{
                 data: result
             })
         }).catch(next)
-        
-        
+
+
 })
 
 
@@ -1214,22 +1214,105 @@ const getPagination = (page, size) => {
 };
 
 module.exports = function (io) {
-
+      
     //Socket.IO
     io.on('connection', function (socket) {
         console.log('User has connected to Index');
         //ON Events
-        socket.on('admin', function () {
-            console.log('Successful Socket Test');
-        });
-        socket.on("like", (data) => {
+
+
+
+        //emit comments
+
+        socket.on('comments' ,function (id) {
+            db2.comment.findAll({
+                include: [
+
+
+
+                    {
+
+                        model: db2.user
+
+
+                    },
+
+                ],
+                where: {
+                    locationLocationId: id
+                }
+            }).then(function (result) {
+                  socket.emit(data)
+
+            })
+
+        })
+        //emit like
+
+
+socket.on('locationlikes' ,  function (id) {
+    db2.like.count({
+        where: {
+            location_id: {
+                [Op.eq]: id
+            }
+        }
+    }).then(result=>{
+        soccket.emit('likes' , {data:result} )
+    })
+})
+
+       
+        socket.on("like", (location , user) => {
+            //emit location like
+            sequelize.query('  REPLACE INTO likes(user_id ,location_id  )   VAlUES(:user ,  :id  )   ', {
+                replacements: { id: location.location_id, user: user.id },
+                type: sequelize.QueryTypes.INSERT
+            })
+
+                // db2.like.create({
+                //     user_id: user,
+                //     location_id: location_id
+                // })
+
+                .then((result) => {
+
+                   //emit likes to user
+
+                    db2.like.count({
+                        where: {
+                            location_id: {
+                                [Op.eq]: location.location_id
+                            }
+                        }
+                    }).then(result => {
+                        soccket.emit('likes', { data: result })
+                    })
+                    //emit to admin insert into log table 
+
+
+
+
+                    //add user 
+
+                    
+                })
+          
+
+
+
+
+
 
             //  io.emit("update" ,    )
         })
         //End ON Events
         socket.on("comment", data => {
+            //insrt comment in table 
 
-
+            //emit location comments
+             socket.emit('comments' ,   )
+            //emit to admin
         })
     });
     return router;

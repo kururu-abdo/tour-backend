@@ -131,6 +131,9 @@ app.use(function (err, req, res, next) {
 
 //   res.sendFile(path.join(__dirname + '/index.html'));
 // })
+
+
+
 // app.use('/', router);
 
 // app.get('/', (req, res) => {
@@ -175,10 +178,45 @@ function getUrl() {
     console.error(error.message);
   });
 }
-io.on('connection', () => {
+var users =[]
+io.on('connection', (client) => {
+       
+  
+
+  client.on('user-connection' , function name(user) {
+    db.log.create({
+     event: "قام المستخدم "+ " " +user +" " +"بتسجيل الدخول"
+
+    }).then(function (result) {
+
+      db.log.findAll({}).then(result2=>{
+        io.emit('log', result2)
+
+      })
+    })
+
+  }  )
+
 
   console.log("CONNECTED");
-});
+//emit to admin
+  client.on('disconnect', function () {
+    console.log('client disconnect...', client.id)
+    // handleDisconnect()
+
+
+    
+  })
+
+
+} 
+
+
+);
+
+
+
+
 
 server.listen(process.env.PORT || 5000, () => {
   console.log(`Example app listening at port 8000`)
