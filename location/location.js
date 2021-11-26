@@ -1217,11 +1217,24 @@ module.exports = function (io) {
       
     //Socket.IO
     io.on('connection', function (socket) {
-        console.log('User has connected to Index');
+       
         //ON Events
+   socket.on('admin' ,  ()=>{
+       console.log("Admin connected");
+   })
 
+        socket.on('fetch-logs', function (data) {
+            console.log(data);
+            db2.log.findAll({
+                order: [
+                    ['id', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+                ]
 
+            }).then(result2 => {
+                socket.emit('log', result2)
 
+            })
+        })
         //emit comments
 
         socket.on('comments' ,function (id) {
@@ -1241,13 +1254,83 @@ module.exports = function (io) {
                 where: {
                     locationLocationId: id
                 }
-            }).then(function (result) {
-                  socket.emit(data)
+            }).then(function (data) {
+                  socket.emit("location-comments",  data)
 
             })
 
         })
+
+socket.on('user-comment' ,  function (data) {
+    
+    db2.comment.create({
+        userUserId: data.user.user_id,
+        locationLocationId:data. location. location_id,
+        comment: data.comment,
+        time: Date.now()
+    }).then(function (result) {
+        db2.comment.findAll({
+            include: [
+
+
+
+                {
+
+                    model: db2.user
+
+
+                },
+
+            ],
+            where: {
+                locationLocationId: data.location.location_id
+            }
+        }).then(function (data2) {
+            io.emit("location-comments", data2)
+
+            db2.log.create({
+                event: "قام المستخدم " + " " + data.user.name + " " + "بالتعليق على " + " "+data.location.name
+
+            }).then(function (result) {
+
+                db2.log.findAll({
+
+                    order: [
+                        ['id', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+                    ]
+
+                }).then(result2 => {
+                    io.emit('log', result2)
+
+                })
+            })
+
+        })
+
+
+    })
+})
+
+
+
         //emit like
+
+socket.on('ifilikeit' , function (info) {
+    db2.like.count({
+        where: {
+            location_id: {
+                [Op.eq]: info.location_id
+            },
+            user_id: {
+                [Op.eq]: info.id
+            }
+        }
+    }).then(function (result) {
+
+        socket.emit('ilikeit', { data: result, id: info.location_id, user: info.id })
+
+    })
+})
 
 
 socket.on('locationlikes' ,  function (id) {
@@ -1258,15 +1341,31 @@ socket.on('locationlikes' ,  function (id) {
             }
         }
     }).then(result=>{
-        soccket.emit('likes' , {data:result} )
+        socket.emit('likes' , {data:result ,id:id} )
+
+        // db2.like.count({
+        //     where: {
+        //         location_id: {
+        //             [Op.eq]: data.location_id
+        //         },
+        //         user_id: {
+        //             [Op.eq]: data.id
+        //         }
+        //     }
+        // }).then(function (result) {
+
+        //     socket.emit('ilikeit', { data: result, id: data.location_id, user: data.id })
+
+        // })
+        
     })
 })
 
        
-        socket.on("like", (location , user) => {
+        socket.on("like", (data) => {
             //emit location like
             sequelize.query('  REPLACE INTO likes(user_id ,location_id  )   VAlUES(:user ,  :id  )   ', {
-                replacements: { id: location.location_id, user: user.id },
+                replacements: { id: data.location_id, user: data.id },
                 type: sequelize.QueryTypes.INSERT
             })
 
@@ -1282,14 +1381,48 @@ socket.on('locationlikes' ,  function (id) {
                     db2.like.count({
                         where: {
                             location_id: {
-                                [Op.eq]: location.location_id
+                                [Op.eq]: data.location_id
                             }
                         }
                     }).then(result => {
-                        soccket.emit('likes', { data: result })
+                        io.emit('likes', { data: result, id:data.location_id })
+
+                        db2.like.count({
+                            where: {
+                                location_id: {
+                                    [Op.eq]: data.location_id
+                                },
+                                user_id: {
+                                    [Op.eq]: data.id
+                                }
+                            }
+                        }).then(function (result) {
+
+                            socket.emit('ilikeit', { data: result , id:data.location_id , user:data.id})
+
+                        })
+
+
                     })
                     //emit to admin insert into log table 
+console.log(data);
 
+                    db2.log.create({
+                        event: "قام المستخدم " + " " + data.user_name + " " + "بتسجيل اعجاب  على " + " " + data.location_name
+
+                    }).then(function (result) {
+
+                        db2.log.findAll({
+
+                            order: [
+                                ['id', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+                            ]
+
+                        }).then(result2 => {
+                            io.emit('log', result2)
+
+                        })
+                    })
 
 
 

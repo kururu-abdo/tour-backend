@@ -1,15 +1,15 @@
 const express = require('express')
 const app = express()
-const server  = require("http").createServer(app);
+const server = require("http").createServer(app);
 const db = require("./models");
-const path =  require('path');
+const path = require('path');
 var device = require('express-device');
 var geoip = require('geoip-lite');
 const dotenv = require("dotenv")
 let jwt = require('jwt-simple');
 const user = require('./controllers/user/userController');
 const https = require("https")
-const store =require("localStorage")
+const store = require("localStorage")
 var bodyParser = require('body-parser')
 var auth = require('./config/passport')()
 const router = express.Router();
@@ -64,8 +64,8 @@ app.use('/photos/users', express.static('photos/users/'));
 //routes
 var locations = require('./location/location')(io)
 app.use('/user', require('./user/user')(io))
-app.use('/country' ,  require('./country/country'))
-app.use('/location',locations)
+app.use('/country', require('./country/country'))
+app.use('/location', locations)
 app.use('/company', require('./company/Company'))
 
 
@@ -82,7 +82,7 @@ app.post('/upload', function (req, res) {
 //multer  config 
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
-    
+
     callback(null, "./photos/users");
   },
   filename: function (req, file, callback) {
@@ -162,7 +162,7 @@ function getUrl() {
 
     res.on("end", () => {
       try {
-       // var localStorage = new store('./scratch');
+        // var localStorage = new store('./scratch');
 
         //Setting localStorage Item
         store.setItem('Name', 'Manish Mandal')
@@ -178,18 +178,37 @@ function getUrl() {
     console.error(error.message);
   });
 }
-var users =[]
+var users = []
 io.on('connection', (client) => {
-       
-  
+  client.on('admin', function () {
+    console.log("ADMIN CONNECTED");
+    //   socket.emit('log' ,{name:"admin"})
+  })
+  client.on('fetch-logs', function (data) {
+  console.log(data);
+    db.log.findAll({
+      order: [
+        ['id', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+      ]
+
+    }).then(result2 => {
+      client.emit('log', result2)
+
+    })
+  })
 
   client.on('user-connection' , function name(user) {
     db.log.create({
-     event: "قام المستخدم "+ " " +user +" " +"بتسجيل الدخول"
+     event: "قام المستخدم "+ " " +user +" " +" بالدخول"
 
     }).then(function (result) {
 
-      db.log.findAll({}).then(result2=>{
+      db.log.findAll({
+        order: [
+          ['id', 'DESC'], // Sorts by COLUMN_NAME_EXAMPLE in ascending order
+        ]
+
+      }).then(result2=>{
         io.emit('log', result2)
 
       })
@@ -198,18 +217,18 @@ io.on('connection', (client) => {
   }  )
 
 
-  console.log("CONNECTED");
-//emit to admin
+  console.log(client.id);
+  //emit to admin
   client.on('disconnect', function () {
     console.log('client disconnect...', client.id)
     // handleDisconnect()
 
 
-    
+
   })
 
 
-} 
+}
 
 
 );
